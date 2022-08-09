@@ -1,46 +1,36 @@
-import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import { React, useState } from 'react';
+import ReadCSV from './components/readCSV';
 
+const nodes = [
+  {id: Number, title: String}
+];
+const links = [
+  {from : Number, to: Number}
+];
+  
 function App() {
 
-  const [value, setValue] = useState([
-    {id: 1, name: 'Alice'}, 
-    {
-    id: 2,
-    name: 'Bob'}]);
-
-  const handleClick = () => {
-    // 👇️ push to end of state array
-    setValue(value => [...value, 
-      {id: 3, 
-        name: 'Carl'
-      }]);
-
-    // 👇️ spread an array into the state array
-    // setNames(current => [...current, ...['Carl', 'Delilah']]);
-
-    // 👇️ push to beginning of state array
-    // setNames(current => ['Zoey', ...current]);
-  };
   return (
-    // <div className="App">
-    //   <header className="App-header">
-       
-    //   </header>
-    // </div>
     <div>
-      <div>
-        <button onClick={handleClick}>Push to state array</button>
-      </div>
-
-      {value.map((element, index) => {
-        return (
-          <div key={index}>
-            <h2>{element}</h2>
-          </div>
-        );
-      })}
+      <ReadCSV 
+        type = 'nodes'
+        onChangeState={ function(table, _nodes){
+          _nodes.map((value)=> {
+            nodes.push({id: value[0], title: value[1]})
+          });
+          console.log(nodes);
+        }}>
+      </ReadCSV>
+      <ReadCSV
+        type = 'links'
+        onChangeState={function(table, _links){
+          _links.map((value) => {
+            links.push({from: value[0], to: value[1]})
+          });
+          console.log(links);
+        }}>
+      </ReadCSV>
     </div>
   );
 }
