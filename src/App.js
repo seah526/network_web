@@ -1,36 +1,34 @@
 import './App.css';
 import { React, useState } from 'react';
 import ReadCSV from './components/readCSV';
+import GraphVis from './components/GraphVis';
 
-const nodes = [
-  {id: Number, title: String}
-];
-const links = [
-  {from : Number, to: Number}
-];
-  
 function App() {
 
+  const [nodes, setNodes] = useState([]);
+  const [links, setLinks] = useState([]);
+  
   return (
     <div>
       <ReadCSV 
-        type = 'nodes'
-        onChangeState={ function(table, _nodes){
-          _nodes.map((value)=> {
-            nodes.push({id: value[0], title: value[1]})
+        onChangeState={ function(_nodes){
+          _nodes.forEach(value => {
+            setNodes(nodes => [...nodes, {id: value[0], label: value[1], value: Number(value[2]), title: value[1]}]);
           });
-          console.log(nodes);
         }}>
       </ReadCSV>
       <ReadCSV
-        type = 'links'
-        onChangeState={function(table, _links){
-          _links.map((value) => {
-            links.push({from: value[0], to: value[1]})
+        onChangeState={ function(_links){
+          _links.forEach(value => {
+            setLinks(links => [...links, {from: Number(value[0]), to: Number(value[1]), value: Number(value[2])}]);
           });
-          console.log(links);
-        }}>
+      }}>
       </ReadCSV>
+      <GraphVis
+        nodes = {nodes}
+        links = {links}
+      >
+      </GraphVis>
     </div>
   );
 }
